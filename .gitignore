@@ -1,0 +1,22 @@
+# Arquivos compilados
+*.dcu
+*.exe
+*.stat
+*.bpl
+
+# Delphi arquivos locais
+*.dproj.local
+*.identcache
+*.tvsconfig
+*.res
+
+#Pastas
+__history/
+banco_de_dados/
+Win32/
+Win64/
+
+#Outros
+Dicas.txt
+
+
