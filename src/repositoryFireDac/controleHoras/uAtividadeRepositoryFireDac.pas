@@ -13,7 +13,7 @@ type
       procedure salvar(atividade: TAtividade);
       procedure alterar(atividade: TAtividade);
       procedure excluir(id: integer);
-      function listar(idAtividade, idTipoAtividade: integer; obs: string): TObjectList<TAtividade>;
+      function listar(idAtividade, idTipoAtividade: integer; descricao: string): TObjectList<TAtividade>;
 
   End;
 
@@ -24,15 +24,18 @@ var
   query: TFDQuery;
 begin
   query:= TFDQuery.Create(nil);
-
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'INSERT INTO ATIVIDADE(DESCRICAO, OBS, ID_TIPOATIVIDADE) VALUES '+
-                                            '(:DESCRICAO, :OBS, :ID_TIPOATIVIDADE)';
-    query.ParamByName('DESCRICAO').AsString:= atividade.descricao;
-    query.ParamByName('OBS').AsString:= atividade.obs;
-    query.ParamByName('ID_TIPOATIVIDADE').AsInteger:= atividade.tipoAtividade.id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'INSERT INTO ATIVIDADE(DESCRICAO, OBS, ID_TIPOATIVIDADE) VALUES '+
+                                              '(:DESCRICAO, :OBS, :ID_TIPOATIVIDADE)';
+      query.ParamByName('DESCRICAO').AsString:= atividade.descricao;
+      query.ParamByName('OBS').AsString:= atividade.obs;
+      query.ParamByName('ID_TIPOATIVIDADE').AsInteger:= atividade.tipoAtividade.id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -46,14 +49,18 @@ begin
   query:= TFDQuery.Create(nil);
 
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'UPDATE ATIVIDADE SET DESCRICAO=:DESCRICAO, OBS=:OBS,  '+
-                     'ID_TIPOATIVIDADE=:ID_TIPO_ATIVIDADE WHERE ID=:ID      ';
-    query.ParamByName('ID').AsInteger:= atividade.id;
-    query.ParamByName('DESCRICAO').AsString:= atividade.descricao;
-    query.ParamByName('OBS').AsString:= atividade.obs;
-    query.ParamByName('ID_TIPO_ATIVIDADE').AsInteger:= atividade.tipoAtividade.id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'UPDATE ATIVIDADE SET DESCRICAO=:DESCRICAO, OBS=:OBS,  '+
+                       'ID_TIPOATIVIDADE=:ID_TIPO_ATIVIDADE WHERE ID=:ID      ';
+      query.ParamByName('ID').AsInteger:= atividade.id;
+      query.ParamByName('DESCRICAO').AsString:= atividade.descricao;
+      query.ParamByName('OBS').AsString:= atividade.obs;
+      query.ParamByName('ID_TIPO_ATIVIDADE').AsInteger:= atividade.tipoAtividade.id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -64,19 +71,22 @@ var
   query : TFDQuery;
 begin
   query:= TFDQuery.Create(nil);
-
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'DELETE FROM ATIVIDADE WHERE ID=:ID';
-    query.ParamByName('ID').AsInteger:= id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'DELETE FROM ATIVIDADE WHERE ID=:ID';
+      query.ParamByName('ID').AsInteger:= id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
 end;
 
 function TAtividadeRepositoryFireDac.listar(idAtividade, idTipoAtividade: integer;
-                                            obs: string): TObjectList<TAtividade>;
+                                            descricao: string): TObjectList<TAtividade>;
 var
   query : TFDquery;
   atividade: TAtividade;
@@ -93,10 +103,10 @@ begin
     query.SQL.Add(' FROM ATIVIDADE ATI INNER JOIN TIPOATIVIDADE TA ON ATI.ID_TIPOATIVIDADE = TA.ID  ');
     query.SQL.Add(' WHERE 1=1                                                                       ');
 
-    if obs.Trim <> '' then
+    if descricao.Trim <> '' then
     begin
-      query.SQL.Add(' AND OBS LIKE ''%'' :OBS ''%''                                                ');
-      query.ParamByName('OBS').AsString:= obs;
+      query.SQL.Add(' AND ATI.DESCRICAO LIKE :DESCRICAO                                                             ');
+      query.ParamByName('DESCRICAO').AsString:= '%' + descricao + '%';
     end;
     if idAtividade <> 0 then
     begin

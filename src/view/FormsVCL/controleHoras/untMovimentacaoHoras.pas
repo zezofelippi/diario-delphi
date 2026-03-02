@@ -621,7 +621,8 @@ begin
   except
     on E: Exception do
     begin
-      MessageDlg('Erro inesperado: ' + E.Message, mtError, [mbOK],0);
+      LogErro(E);
+      MessageDlg('Erro ao acessar banco de dados: ', mtError, [mbOK],0);
       exit;
     end;
   end;

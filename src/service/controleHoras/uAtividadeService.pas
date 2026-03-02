@@ -15,7 +15,7 @@ type
     constructor create(atividadeRepository: IAtividadeRepository);
     function salvar(atividade: TAtividade): TMensagem;
     function excluir(id: integer):TMensagem;
-    function listar(idAtividade, idTipoAtividade: integer; obs: string): TObjectList<TAtividade>;
+    function listar(idAtividade, idTipoAtividade: integer; descricao: string): TObjectList<TAtividade>;
 end;
 
 implementation
@@ -57,9 +57,9 @@ begin
   end;
 end;
 
-function TAtividadeService.listar(idAtividade, idTipoAtividade: integer; obs: string): TObjectList<TAtividade>;
+function TAtividadeService.listar(idAtividade, idTipoAtividade: integer; descricao: string): TObjectList<TAtividade>;
 begin
-  result:= FAtividadeRepository.listar(idAtividade, idTipoAtividade, obs);
+  result:= FAtividadeRepository.listar(idAtividade, idTipoAtividade, descricao);
 end;
 
 end.

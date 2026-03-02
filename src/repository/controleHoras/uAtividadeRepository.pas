@@ -11,7 +11,7 @@ type
     procedure salvar(atividade: TAtividade);
     procedure alterar(atividade: TAtividade);
     procedure excluir(id: integer);
-    function listar(idAtividade, idTipoAtividade: integer; obs: string): TObjectList<TAtividade>;
+    function listar(idAtividade, idTipoAtividade: integer; descricao: string): TObjectList<TAtividade>;
 
   End;
 

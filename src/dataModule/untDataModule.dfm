@@ -1,13 +1,11 @@
 object DataModule1: TDataModule1
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 174
   Width = 288
   object FDConnection: TFDConnection
     Params.Strings = (
       'Server=localhost'
-      
-        'Database=D:\Sistema de Horas Delphi\controle de horas xe6\banco_' +
-        'de_dados\base_dados_horas.gdb'
       'User_Name=SYSDBA'
       'Password=masterkey'
       'CharacterSet=UTF8'

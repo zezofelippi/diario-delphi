@@ -45,6 +45,16 @@ Banco de Dados
   A conexão é configurada na unit untDataModule através do componente
     FireDAC (FDConnection)
 
+Configuração da Conexão
+
+   A conexão com o banco de dados é configurada dinamicamente através de um arquivo:
+     config.ini
+
+   O arquivo config.ini deve estar localizado na mesma pasta do executável (.exe).
+
+   Há um exemplo na pasta do projeto:
+     config.example.ini
+
 Estrutura das Pastas:
 
 Diario/

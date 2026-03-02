@@ -114,7 +114,7 @@ inherited frmMovimentacaoHoras: TfrmMovimentacaoHoras
     end
     object btnSalvar: TButton
       Left = 464
-      Top = 87
+      Top = 85
       Width = 143
       Height = 34
       Caption = 'Salvar'

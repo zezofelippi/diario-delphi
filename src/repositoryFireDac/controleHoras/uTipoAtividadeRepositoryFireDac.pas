@@ -27,10 +27,14 @@ begin
   query:= TFDQuery.Create(nil);
 
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'INSERT INTO TIPOATIVIDADE(DESCRICAO) VALUES (:DESCRICAO)';
-    query.ParamByName('DESCRICAO').AsString:= tipoAtividade.descricao;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'INSERT INTO TIPOATIVIDADE(DESCRICAO) VALUES (:DESCRICAO)';
+      query.ParamByName('DESCRICAO').AsString:= tipoAtividade.descricao;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -41,13 +45,16 @@ var
   query: TFDQuery;
 begin
   query:= TFDQuery.Create(nil);
-
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'UPDATE TIPOATIVIDADE SET DESCRICAO=:DESCRICAO WHERE ID=:ID';
-    query.ParamByName('ID').AsInteger:= tipoAtividade.id;
-    query.ParamByName('DESCRICAO').AsString:= tipoAtividade.descricao;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'UPDATE TIPOATIVIDADE SET DESCRICAO=:DESCRICAO WHERE ID=:ID';
+      query.ParamByName('ID').AsInteger:= tipoAtividade.id;
+      query.ParamByName('DESCRICAO').AsString:= tipoAtividade.descricao;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -59,12 +66,15 @@ var
   query: TFDQuery;
 begin
   query:= TFDQuery.Create(nil);
-
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'DELETE FROM TIPOATIVIDADE WHERE ID=:ID';
-    query.ParamByName('ID').AsInteger:= id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'DELETE FROM TIPOATIVIDADE WHERE ID=:ID';
+      query.ParamByName('ID').AsInteger:= id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;

@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB, untDataModule,
   Vcl.Grids, Vcl.DBGrids, uTipoAtividadeController, uTipoAtividadeService, uTipoAtividadeRepository,
   untFormBase, Datasnap.DBClient, Datasnap.Provider, Vcl.Menus, uMensagem, System.Generics.Collections,
-  uTipoAtividadeModel, uTipoAtividadeRepositoryFireDac, uListagem;
+  uTipoAtividadeModel, uTipoAtividadeRepositoryFireDac, uListagem, uFuncoesGerais;
 
 type
   TfrmTipoAtividade = class(TfrmFormBase)
@@ -91,7 +91,8 @@ begin
  except
     on E: Exception do
     begin
-      MessageDlg('Erro inesperado', mtError, [mbOK], 0);
+      LogErro(E);
+      MessageDlg('Erro ao acessar banco de dados', mtError, [mbOK], 0);
       exit;
     end;
  end;

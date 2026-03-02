@@ -102,18 +102,21 @@ begin
   //FIM PROIBE CADASTRO DE DATA FUTURA///////////////
 
   ////VERIFICAR SE ACORDAR JÁ FOI INCLUÍDO NA DATA. SE JÁ, NÃO DEIXAR CADASTRAR ACORDAR DIFERENTE
-  lista:= FMovimentacaoHorasRepository.listar(0, 0, movimentacaoHoras.data, movimentacaoHoras.data, '');
+  try
+    lista:= FMovimentacaoHorasRepository.listar(0, 0, movimentacaoHoras.data, movimentacaoHoras.data, '');
 
-  if lista.Count > 0 then
-    if movimentacaoHoras.acordar <> lista.Items[0].acordar then
-    begin
-      result.mensagem:= 'Acordar está diferente do acordar já '+
-                        'cadastrado nessa data. Acordar está ' +
-                        FormatDateTime('hh:mm',lista.Items[0].acordar);
-      result.campo:= 'Acordar';
-      lista.Free;
-      exit;
-    end;
+    if lista.Count > 0 then
+      if movimentacaoHoras.acordar <> lista.Items[0].acordar then
+      begin
+        result.mensagem:= 'Acordar está diferente do acordar já '+
+                          'cadastrado nessa data. Acordar está ' +
+                          FormatDateTime('hh:mm',lista.Items[0].acordar);
+        result.campo:= 'Acordar';
+        exit;
+      end;
+  finally
+    lista.Free;
+  end;
   ///FIM VERIFICAR SE ACORDAR JÁ FOI INCLUÍDO NA DATA. SE JÁ, NÃO DEIXAR CADASTRAR ACORDAR DIFERENTE
 
 

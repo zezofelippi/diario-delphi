@@ -34,20 +34,23 @@ var
   query: TFDQuery;
 begin
   query:= TFDQuery.Create(nil);
-
   try
-    query.Connection:= DataModule1.FDConnection;
+    try
+      query.Connection:= DataModule1.FDConnection;
 
-    query.SQL.Text:= 'UPDATE MOVIMENTACAOHORA SET DATA=:DATA, OBS=:OBS, QTDE_HORAS=:QTDE_HORAS, '+
-                     'ACORDAR=:ACORDAR, ID_ATIVIDADE=:ID_ATIVIDADE '+
-                     'WHERE ID=:ID ';
-    query.ParamByName('ID').AsInteger:= movimentacaoHoras.id;
-    query.ParamByName('DATA').AsDate:= movimentacaoHoras.data;
-    query.ParamByName('OBS').AsString:= movimentacaoHoras.obs;
-    query.ParamByName('QTDE_HORAS').AsTime:= movimentacaoHoras.qtdeHoras;
-    query.ParamByName('ACORDAR').AsTime:= movimentacaoHoras.acordar;
-    query.ParamByName('ID_ATIVIDADE').AsInteger:= movimentacaoHoras.atividade.id;
-    query.ExecSQL;
+      query.SQL.Text:= 'UPDATE MOVIMENTACAOHORA SET DATA=:DATA, OBS=:OBS, QTDE_HORAS=:QTDE_HORAS, '+
+                       'ACORDAR=:ACORDAR, ID_ATIVIDADE=:ID_ATIVIDADE '+
+                       'WHERE ID=:ID ';
+      query.ParamByName('ID').AsInteger:= movimentacaoHoras.id;
+      query.ParamByName('DATA').AsDate:= movimentacaoHoras.data;
+      query.ParamByName('OBS').AsString:= movimentacaoHoras.obs;
+      query.ParamByName('QTDE_HORAS').AsTime:= movimentacaoHoras.qtdeHoras;
+      query.ParamByName('ACORDAR').AsTime:= movimentacaoHoras.acordar;
+      query.ParamByName('ID_ATIVIDADE').AsInteger:= movimentacaoHoras.atividade.id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -96,8 +99,8 @@ begin
     end;
     if obs.Trim <> '' then
     begin
-      query.SQL.Add(' AND OBS LIKE ''%'' :OBS ''%''                                  ');
-      query.ParamByName('OBS').AsString:= obs;
+      query.SQL.Add(' AND MH.OBS LIKE :OBS                                           ');
+      query.ParamByName('OBS').AsString:= '%' + obs + '%';
     end;
     if idAtividade <> 0 then
     begin
@@ -139,10 +142,14 @@ var
 begin
   query:= TFDquery.Create(nil);
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'DELETE FROM MOVIMENTACAOHORAS WHERE ID=:ID';
-    query.ParamByName('ID').AsInteger := id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'DELETE FROM MOVIMENTACAOHORAS WHERE ID=:ID';
+      query.ParamByName('ID').AsInteger := id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
@@ -174,8 +181,8 @@ begin
     end;
     if obs.Trim <> '' then
     begin
-      query.SQL.Add(' AND OBS LIKE ''%'' :OBS ''%''                                                ');
-      query.ParamByName('OBS').AsString:= obs;
+      query.SQL.Add(' AND MH.OBS LIKE :OBS                                                         ');
+      query.ParamByName('OBS').AsString:= '%' + obs + '%';
     end;
     if idAtividade <> 0 then
     begin
@@ -224,15 +231,19 @@ var
 begin
   query:= TFDquery.Create(nil);
   try
-    query.Connection:= DataModule1.FDConnection;
-    query.SQL.Text:= 'INSERT INTO MOVIMENTACAOHORA (DATA, OBS, QTDE_HORAS, ACORDAR, ID_ATIVIDADE)' +
-                     ' VALUES (:DATA, :OBS, :QTDE_HORAS, :ACORDAR, :ID_ATIVIDADE) ';
-    query.ParamByName('DATA').AsDate:= movimentacaoHoras.data;
-    query.ParamByName('OBS').AsString:= movimentacaoHoras.obs;
-    query.ParamByName('QTDE_HORAS').AsTime:= movimentacaoHoras.qtdeHoras;
-    query.ParamByName('ACORDAR').AsTime:= movimentacaoHoras.acordar;
-    query.ParamByName('ID_ATIVIDADE').AsInteger := movimentacaoHoras.atividade.id;
-    query.ExecSQL;
+    try
+      query.Connection:= DataModule1.FDConnection;
+      query.SQL.Text:= 'INSERT INTO MOVIMENTACAOHORA (DATA, OBS, QTDE_HORAS, ACORDAR, ID_ATIVIDADE)' +
+                       ' VALUES (:DATA, :OBS, :QTDE_HORAS, :ACORDAR, :ID_ATIVIDADE) ';
+      query.ParamByName('DATA').AsDate:= movimentacaoHoras.data;
+      query.ParamByName('OBS').AsString:= movimentacaoHoras.obs;
+      query.ParamByName('QTDE_HORAS').AsTime:= movimentacaoHoras.qtdeHoras;
+      query.ParamByName('ACORDAR').AsTime:= movimentacaoHoras.acordar;
+      query.ParamByName('ID_ATIVIDADE').AsInteger := movimentacaoHoras.atividade.id;
+      query.ExecSQL;
+    except
+      raise
+    end;
   finally
     query.Free;
   end;
