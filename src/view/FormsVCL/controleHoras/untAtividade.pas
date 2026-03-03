@@ -1,3 +1,6 @@
+//ESTA UNT CARREGA POUCOS REGISTROS, A FINALIDADE DELA NÃƒO Ã‰ TER CENTENAS DE REGISTROS
+//POR ESSE MOTIVO ELA CARREGA TODOS OS DADOS NO CLIENTDATASET E A PESQUISA Ã‰ FEITA NESSE CLIENTDATASET USANDO Tlistagem
+
 unit untAtividade;
 
 interface
@@ -35,8 +38,6 @@ type
     popMenu: TPopupMenu;
     Alterar1: TMenuItem;
     Excluir1: TMenuItem;
-    dspAtividade: TDataSetProvider;
-    cdsAtividade: TClientDataSet;
     btnCancelarAlteracao: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
@@ -147,13 +148,29 @@ end;
 
 procedure TfrmAtividade.Excluir1Click(Sender: TObject);
 var
-  resposta: TMensagem;
+  caminho: string;
 begin
-  resposta:= FAtividadeController.excluir(cdsAtividade.FieldByName('ID').AsInteger);
+  case MessageBox (Application.Handle, Pchar ('Confirmar exclusï¿½o do registro? ' +
+                                FListagem.cdsAtividade.FieldByName('DESCRICAO').AsString),
+                               'Alerta' ,
+                                MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON1) of
+  IDNO:
+    begin
+      exit;
+    end;
+  end;
 
-  if resposta.mensagem <> '' then
-    showmessage(resposta.mensagem);
-
+  try
+    FAtividadeController.excluir(FListagem.cdsAtividade.FieldByName('ID').AsInteger);
+  except
+    on E: exception do
+    begin
+      logErro(E);
+      caminho := ExtractFilePath(ParamStr(0));
+      MessageDlg('Erro ao excluir registro, verificar detalhes no arquivo log '+ caminho + 'log.txt',mtError, [mbOK],0);
+      exit;
+    end;
+  end;
   btnListar.Click;
 end;
 
@@ -175,7 +192,7 @@ begin
 
   filtro := '';
 
-  // Filtro por descrição
+  // Filtro por descriï¿½ï¿½o
   if Trim(edtDescricaoPesquisa.Text) <> '' then
     filtro := Format(
       'DESCRICAO LIKE %s',
@@ -209,7 +226,7 @@ begin
   FListagem.Free;
   FAtividadeController.Free;
   FTipoAtividadeController.Free;
-  frmAtividade := nil; //sem esse comando frmAtividade continua apontando p/ um endereço invalido, por isso o uso do nil
+  frmAtividade := nil; //sem esse comando frmAtividade continua apontando p/ um endereï¿½o invalido, por isso o uso do nil
 end;
 
 procedure TfrmAtividade.FormCreate(Sender: TObject);

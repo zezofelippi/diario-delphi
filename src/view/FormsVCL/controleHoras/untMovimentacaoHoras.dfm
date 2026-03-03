@@ -309,6 +309,10 @@ inherited frmMovimentacaoHoras: TfrmMovimentacaoHoras
       Caption = 'Alterar'
       OnClick = Alterar1Click
     end
+    object Excluir1: TMenuItem
+      Caption = 'Excluir'
+      OnClick = Excluir1Click
+    end
   end
   object cdsMovimentacaoHoras: TClientDataSet
     Aggregates = <>

@@ -4,8 +4,8 @@ interface
 
 uses DateUtils, System.SysUtils;
 
-  function DiasEntreDatas(DataInicial, DataFinal: TDate): Integer;
-  procedure LogErro(E: Exception);
+  function diasEntreDatas(DataInicial, DataFinal: TDate): Integer;
+  procedure logErro(E: Exception);
 
 implementation
 
@@ -14,7 +14,7 @@ begin
   Result := DaysBetween(DataFinal, DataInicial) +1;
 end;
 
-procedure LogErro(E: Exception);
+procedure logErro(E: Exception);
 var
   Arquivo: TextFile;
   Caminho: string;

@@ -216,7 +216,6 @@ object frmAtividade: TfrmAtividade
     end
   end
   object dtsAtividade: TDataSource
-    DataSet = cdsAtividade
     Left = 392
     Top = 288
   end
@@ -235,15 +234,5 @@ object frmAtividade: TfrmAtividade
       Caption = 'Excluir'
       OnClick = Excluir1Click
     end
-  end
-  object dspAtividade: TDataSetProvider
-    Left = 392
-    Top = 357
-  end
-  object cdsAtividade: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 472
-    Top = 325
   end
 end

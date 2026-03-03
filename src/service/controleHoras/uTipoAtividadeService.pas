@@ -14,7 +14,7 @@ type
   public
     constructor create(tipoAtividadeRepository: ITipoAtividadeRepository);
     function salvar(tipoAtividade: TTipoAtividade):TMensagem;
-    function excluir(id: integer): TMensagem;
+    procedure excluir(id: integer);
     function listar(descricao: string):TObjectList<TTipoAtividade>;
 
   end;
@@ -29,6 +29,8 @@ end;
 
 function TTipoAtividadeService.salvar(tipoAtividade: TTipoAtividade):TMensagem;
 begin
+  Result := Default(TMensagem);
+
   if tipoAtividade.descricao.Trim = '' then
   begin
     result.mensagem:= 'Descrição é campo de preenchimento obrigatório';
@@ -44,21 +46,11 @@ begin
     FTipoAtividadeRepository.salvar(tipoAtividade)
   else
     FTipoAtividadeRepository.alterar(tipoAtividade);
-
-
-
 end;
 
-function TTipoAtividadeService.excluir(id: integer): TMensagem;
+procedure TTipoAtividadeService.excluir(id: integer);
 begin
-  try
-    FTipoAtividadeRepository.excluir(id);
-    result.mensagem:= '';
-  Except
-    result.mensagem:= 'Erro ao excluir registro, possivelmente este registro está vinculado a alguma atividade';
-  end;
-
-
+  FTipoAtividadeRepository.excluir(id);
 end;
 
 function TTipoAtividadeService.listar(descricao: string):TObjectList<TTipoAtividade>;

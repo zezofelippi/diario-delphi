@@ -59,6 +59,7 @@ type
     openDialog: TOpenDialog;
     Label10: TLabel;
     Label11: TLabel;
+    Excluir1: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure edtTipoAtividadeKeyDown(Sender: TObject; var Key: Word;
@@ -84,6 +85,7 @@ type
     procedure btnGerarPdfClick(Sender: TObject);
     procedure edtAtividadeExit(Sender: TObject);
     procedure edtDataExit(Sender: TObject);
+    procedure Excluir1Click(Sender: TObject);
 
 
   private
@@ -394,8 +396,6 @@ begin
 
   while not cdsLocal.Eof do
   begin
-    if cdsLocal.fieldbyname('DATA').asstring = '06/02/2026' then
-      filtro:='';
 
     if (cdsLocal.fieldbyname('DATA').asstring <> '') and
        (cdsLocal.fieldbyname('DATA').asstring <> dataStr) AND
@@ -734,6 +734,43 @@ begin
     edtTipoAtividade.KeyValue := null;
     alimentarAtividadeComboBox(0, tlAtividade);
   end;
+
+end;
+
+procedure TfrmMovimentacaoHoras.Excluir1Click(Sender: TObject);
+var
+  caminho: string;
+  celulaSelecionada: TMovimentacaoHoras;
+begin
+
+ case MessageBox (Application.Handle, Pchar ('Confirmar exclusão do registro? ' +
+                                cdsMovimentacaoHoras.FieldByName('DATA').AsString +
+                                '  ' + grdMovimentacaoHoras.SelectedField.FieldName ),
+                               'Alerta' ,
+                                MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON1) of
+  IDNO:
+    begin
+      exit;
+    end;
+  end;
+
+  celulaSelecionada:= FMovimentacaoHorasController.selecionarCelula(
+               cdsMovimentacaoHoras.FieldByName('DATA').AsDateTime,
+               grdMovimentacaoHoras.SelectedField.FieldName);
+
+  try
+    FMovimentacaoHorasController.excluir(celulaSelecionada.id);
+  except
+    ON E: exception do
+    begin
+      logErro(E);
+      caminho:= ExtractFilePath(ParamStr(0));
+      MessageDlg('Erro ao excluir registro, verificar detalhes no arquivo log, '+ caminho +'log.txt',mtError, [mbOK],0);
+      exit;
+    end;
+  end;
+
+  btnListar.Click;
 
 end;
 

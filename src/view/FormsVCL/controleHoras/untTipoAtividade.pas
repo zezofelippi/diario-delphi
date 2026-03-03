@@ -1,3 +1,6 @@
+//ESTA UNT CARREGA POUCOS REGISTROS, A FINALIDADE DELA NÃO É TER CENTENAS DE REGISTROS
+//POR ESSE MOTIVO ELA CARREGA TODOS OS DADOS NO CLIENTDATASET E A PESQUISA É FEITA NESSE CLIENTDATASET USANDO Tlistagem
+
 unit untTipoAtividade;
 
 interface
@@ -19,8 +22,6 @@ type
     btnListar: TButton;
     dtsTipoAtividade: TDataSource;
     Label1: TLabel;
-    cdsTipoAtividade: TClientDataSet;
-    dspTipoAtividade: TDataSetProvider;
     dbgTipoAtividade: TDBGrid;
     popMenu: TPopupMenu;
     Alterar1: TMenuItem;
@@ -84,18 +85,20 @@ end;
 procedure TfrmTipoAtividade.btnSalvarClick(Sender: TObject);
 var
   resposta: TMensagem;
+  caminho: string;
 begin
 
- try
+  try
     resposta:= FTipoAtividadeController.salvar(FId, edtDescricao.Text);
- except
+  except
     on E: Exception do
     begin
-      LogErro(E);
-      MessageDlg('Erro ao acessar banco de dados', mtError, [mbOK], 0);
+      logErro(E);
+      caminho := ExtractFilePath(ParamStr(0));
+      MessageDlg('Erro ao acessar banco de dados, ver arquivo log.txt em ' + caminho + 'log.txt', mtError, [mbOK], 0);
       exit;
     end;
- end;
+  end;
 
   if resposta.campo <> '' then
   begin
@@ -128,13 +131,29 @@ end;
 
 procedure TfrmTipoAtividade.Excluir1Click(Sender: TObject);
 var
-  resposta : TMensagem;
+  caminho: string;
 begin
-  resposta:= FTipoAtividadeController.excluir(cdsTipoAtividade.FieldByName('ID').AsInteger);
+  case MessageBox (Application.Handle, Pchar ('Confirmar exclusão do registro? ' +
+                                FListagem.cdsTipoAtividade.FieldByName('DESCRICAO').AsString),
+                               'Alerta' ,
+                                MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON1) of
+  IDNO:
+    begin
+      exit;
+    end;
+  end;
 
-  if resposta.mensagem <> '' then
-    showmessage(resposta.mensagem);
-
+  try
+    FTipoAtividadeController.excluir(FListagem.cdsTipoAtividade.FieldByName('ID').AsInteger);
+  except
+    on E: exception do
+    begin
+      logErro(E);
+      caminho := ExtractFilePath(ParamStr(0));
+      messagedlg('Erro ao excluir registro, ver detalhes no arquivo log ' + caminho + 'log.txt',mtError, [mbOk],0);
+      exit;
+    end;
+  end;
   btnListar.Click;
 end;
 

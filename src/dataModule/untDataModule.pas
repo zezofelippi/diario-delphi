@@ -16,7 +16,8 @@ uses
   FireDAC.DApt,
   FireDAC.Comp.DataSet,
   FireDAC.UI.Intf, FireDAC.Stan.Error, FireDAC.Stan.Def, FireDAC.Stan.Pool,
-  FireDAC.Stan.Async, FireDAC.VCLUI.Wait, Data.DB, System.IniFiles;
+  FireDAC.Stan.Async, FireDAC.VCLUI.Wait, Data.DB, System.IniFiles, Vcl.Dialogs,
+  uFuncoesGerais, Vcl.Forms;
 
 type
   TDataModule1 = class(TDataModule)
@@ -44,6 +45,7 @@ begin
   CaminhoIni := ExtractFilePath(ParamStr(0)) + 'config.ini';
 
   Ini := TIniFile.Create(CaminhoIni);
+
   try
     FDConnection.Params.Clear;
 
@@ -64,12 +66,22 @@ begin
 
     FDConnection.Params.Values['Port'] :=
       Ini.ReadString('BANCO', 'Port', '');
-
   finally
     Ini.Free;
   end;
 
-  FDConnection.Connected := True;
+  try
+    FDConnection.Connected := True;
+  except
+    on E: exception do
+    begin
+      CaminhoIni := ExtractFilePath(ParamStr(0));
+      logErro(E);
+      MessageDlg('Erro ao carregar arquivo config.ini, verificar log.txt na pasta '+
+      CaminhoIni, mtError, [mbOK],0);
+      Application.Terminate;
+    end;
+  end;
 
 end;
 

@@ -13,7 +13,7 @@ type
   public
     constructor create(atividadeService: TAtividadeService);
     function salvar(id: integer; descricao, obs: String; idTipoAtividade: integer): TMensagem;
-    function excluir(id: integer):TMensagem;
+    procedure excluir(id: integer);
     function listar(idAtividade, idTipoAtividade: integer; descricao: string): TObjectList<TAtividade>;
 
   End;
@@ -25,9 +25,9 @@ begin
   self.FAtividadeService:= atividadeService;
 end;
 
-function TAtividadeController.excluir(id: integer): TMensagem;
+procedure TAtividadeController.excluir(id: integer);
 begin
-  result:= FAtividadeService.excluir(id);
+  FAtividadeService.excluir(id);
 end;
 
 function TAtividadeController.salvar(id: integer; descricao,

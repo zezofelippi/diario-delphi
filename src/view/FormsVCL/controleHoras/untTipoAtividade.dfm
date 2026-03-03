@@ -128,19 +128,9 @@ object frmTipoAtividade: TfrmTipoAtividade
     Left = 368
     Top = 177
   end
-  object cdsTipoAtividade: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 472
-    Top = 177
-  end
-  object dspTipoAtividade: TDataSetProvider
-    Left = 416
-    Top = 241
-  end
   object popMenu: TPopupMenu
-    Left = 216
-    Top = 241
+    Left = 232
+    Top = 177
     object Alterar1: TMenuItem
       Caption = 'Alterar'
       OnClick = Alterar1Click

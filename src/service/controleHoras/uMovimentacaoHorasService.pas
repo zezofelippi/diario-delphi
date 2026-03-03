@@ -13,7 +13,7 @@ type
     public
       constructor create(movimentacaoHorasRepository: IMovimentacaoHorasRepository);
       function salvar(movimentacaoHoras: TMovimentacaoHoras): TMensagem;
-      function excluir(id: integer): TMensagem;
+      procedure excluir(id: integer);
       function listar(idTipoAtividade, idAtividade: integer;
                        dataInicial, dataFinal: TDate; obs: string):TObjectList<TMovimentacaoHoras>;
       function calcularTotalHorasPorColuna(idTipoAtividade, idAtividade: integer;
@@ -40,19 +40,9 @@ begin
   FMovimentacaoHorasRepository:= movimentacaoHorasRepository;
 end;
 
-function TMovimentacaoHorasService.excluir(id: integer): TMensagem;
+procedure TMovimentacaoHorasService.excluir(id: integer);
 begin
-  //Se não cair no except, o Result nunca recebe valor.
-  //Como record não é automaticamente zerado de forma garantida, você pode retornar lixo de memória
-  //Isso pode dar comportamento indefinido
-  //Isso zera o record inteiro.
-  result := Default(TMensagem);
-
-  try
-    FMovimentacaoHorasRepository.excluir(id);
-  except
-    result.mensagem:='Erro ao excluir registro de movimentação de horas';
-  end;
+  FMovimentacaoHorasRepository.excluir(id);
 end;
 
 function TMovimentacaoHorasService.listar(idTipoAtividade, idAtividade: integer;

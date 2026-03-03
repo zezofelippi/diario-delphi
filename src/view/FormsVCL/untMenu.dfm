@@ -14,6 +14,7 @@ object frmMenu: TfrmMenu
   OldCreateOrder = False
   Position = poScreenCenter
   WindowState = wsMaximized
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -49,7 +50,6 @@ object frmMenu: TfrmMenu
         Caption = 'Movimenta'#231#227'o de horas'
         TabOrder = 0
         OnClick = btnMovimentacaoHorasClick
-        ExplicitTop = 56
       end
       object btnTipoAtividade: TBitBtn
         Left = 0

@@ -14,7 +14,7 @@ type
       constructor create(movimentacaoHorasService: TMovimentacaoHorasService);
       function salvar(id, idAtividade: integer; data: TDate;
                       qtdeHoras, acordar: TTime; obs: string): TMensagem;
-      function excluir(id: integer): TMensagem;
+      procedure excluir(id: integer);
       function listar(idTipoAtividade, idAtividade: integer; dataInicial, dataFinal: TDate;
                       obs: string): TObjectList<TMovimentacaoHoras>;
       function calcularTotalHorasPorColuna(idTipoAtividade, idAtividade: integer; dataInicial, dataFinal: TDate;
@@ -40,9 +40,9 @@ begin
   self.FMovimentacaoHorasService:= movimentacaoHorasService;
 end;
 
-function TMovimentacaoHorasController.excluir(id: integer): TMensagem;
+procedure TMovimentacaoHorasController.excluir(id: integer);
 begin
-  result:= FMovimentacaoHorasService.excluir(id);
+  FMovimentacaoHorasService.excluir(id);
 end;
 
 function TMovimentacaoHorasController.listar(idTipoAtividade, idAtividade: integer;

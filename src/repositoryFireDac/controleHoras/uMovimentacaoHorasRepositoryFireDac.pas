@@ -144,7 +144,7 @@ begin
   try
     try
       query.Connection:= DataModule1.FDConnection;
-      query.SQL.Text:= 'DELETE FROM MOVIMENTACAOHORAS WHERE ID=:ID';
+      query.SQL.Text:= 'DELETE FROM MOVIMENTACAOHORA WHERE ID=:ID';
       query.ParamByName('ID').AsInteger := id;
       query.ExecSQL;
     except

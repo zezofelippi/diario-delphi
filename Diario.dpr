@@ -37,7 +37,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TfrmMenu, frmMenu);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.Run;
 end.
