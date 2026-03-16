@@ -1,0 +1,41 @@
+version: "3.3"
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: controlehorasdb-delphi
+    environment:
+      POSTGRES_DB: diario
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - diario-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4-delphi
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "15432:80"
+    networks:
+      - diario-network
+
+  api:
+    build: .
+    image: diario-api-delphi
+    container_name: diarioapi-delphi
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - diario-network
+
+networks:
+  diario-network:
+    driver: bridge

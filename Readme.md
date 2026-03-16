@@ -29,9 +29,16 @@ Arquitetura
 
   RepositoryFireDac (implementação concreta)
 
-  A aplicação foi desenvolvida utilizando:
+  Ela é dividida para ser utilizada tanto em desktop Windows como api em container Docker Linux para
+  ser utilizada em nuvens
+
+  A aplicação começou a ser desenvolvida utilizando:
 
   Delphi XE6 (VCL)
+
+  Atualmente usando a versão:
+
+  Delphi 10.4
 
 
 Banco de Dados
@@ -45,85 +52,88 @@ Banco de Dados
   A conexão é configurada na unit untDataModule através do componente
     FireDAC (FDConnection)
 
+ Postgres para ser utilizada nas nuvens
+
 Configuração da Conexão
 
    A conexão com o banco de dados é configurada dinamicamente através de um arquivo:
      config.ini
 
-   O arquivo config.ini deve estar localizado na mesma pasta do executável (.exe).
+   O arquivo config.ini deve estar localizado na mesma pasta do executável (.exe)  ou na mesma pasta da api em caso de ser em nuvens.
 
    Há um exemplo na pasta do projeto:
-     config.example.ini
+     config.exampleFB.ini  config.examplePG.ini 
 
-Estrutura das Pastas:
 
-Diario/
-│
-├── Diario.dpr
-├── README.md
-├── .gitignore
-│
-├── banco_de_dados/
-│   └── BASE_DADOS_HORAS.GDB
-│
-├── dataBase/
-│   └── dataBase_FireBird.sql
-│
-└── src/
-    ├── classesGerais/
-    ├── funcoesGerais/
-    │
-    ├── controller/
-    │   └── controleHoras/
-    │
-    ├── service/
-    │   └── controleHoras/
-    │
-    ├── repository/
-    │   └── controleHoras/
-    │
-    ├── repositoryFireDac/
-    │   └── controleHoras/
-    │
-    ├── model/
-    │   └── controleHoras/
-    │
-    ├── dataModule/
-    │
-    └── view/
-        ├── FormsVCL/
-        │   └── controleHoras/
-        └── relatoriosHtml/
-            └── controleHoras/
+Organização Interna:
 
-Organização Interna (src/)
+O projeto está dividido em três aplicações principais e um núcleo de código compartilhado, permitindo reutilização de regras de negócio entre o desktop VCL e a API REST em Linux (Docker).
 
-  O código-fonte está organizado conforme separação de responsabilidades:
+desktop-vcl/     → Aplicação desktop desenvolvida em VCL (Firebird)
+api-linux/       → API REST executando em Linux/Docker
+frontend-html/   → Interface web simples em HTML + JavaScript
+shared/          → Código compartilhado entre desktop e API
+dataModule/      → Configuração de acesso a banco de dados por plataforma
 
-  controller/ → Orquestra as requisições entre View e Service
 
-  service/ → Regras de negócio
+Núcleo Compartilhado (shared/):
 
-  repository/ → Interfaces de acesso a dados
+Contém as camadas de domínio e regras de negócio reutilizadas tanto pela aplicação desktop quanto pela API.
 
-  repositoryFireDac/ → Implementações concretas utilizando FireDAC
- 
-  model/ → Entidades do domínio
+controller/        → Controladores responsáveis por orquestrar requisições entre camada externa e serviços
 
-  view/ → Forms VCL e geração de relatórios HTML
+service/           → Implementação das regras de negócio
 
-  dataModule/ → Configuração de conexão com banco
+repository/        → Interfaces de acesso a dados (contratos)
 
-  classesGerais/ → Classes auxiliares reutilizáveis
+repositoryFireDac/ → Implementações concretas de acesso a dados utilizando FireDAC
 
-  funcoesGerais/ → Funções utilitárias
+model/             → Entidades de domínio do sistema
+
+classesGerais/     → Classes auxiliares reutilizáveis
+
+funcoesGerais/     → Funções utilitárias de uso comum
+
+
+Camada Desktop (desktop-vcl/):
+
+Aplicação cliente desenvolvida com VCL.
+
+FormsVCL/        → Telas da aplicação desktop
+
+relatoriosHtml/  → Geração de relatórios em HTML
+
+fbclient.dll -> caso use banco firebird colocar dll na mesma pasta do exe
+
+midas.dll -> colocar na mesma pasta do exe
+
+
+Camada API (api-linux/):
+
+API REST executando em ambiente Linux dentro de container Docker.
+
+Desenvolvida com Delphi usando WebBroker
+
+Servidor HTTP baseado em Indy (IdHTTPWebBrokerBridge)
+
+Utiliza PostgreSQL como banco de dados
+
+
+Camada Frontend (frontend-html/):
+
+Interface web simples utilizada para consumir a API.
+
+index.html → Página principal
+
+js/        → Scripts JavaScript para consumo da API REST
+
 
 
 Tecnologias Utilizadas:
 
-  Delphi XE6 (VCL)
+  Começou Delphi XE6 (VCL) e agora Delphi 10.4 
 
-  Firebird 2.5
+  Firebird 2.5  e Postgres
 
   FireDAC
 

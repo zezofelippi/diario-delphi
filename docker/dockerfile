@@ -1,0 +1,19 @@
+FROM ubuntu:20.04
+
+RUN apt update && \
+    apt install -y libpq5
+
+#pacote libpq.so que contem a biblioteca libpq.so.5 utilizada p/ firedac e outros componentes fazerem conexoes e
+#transacoes com banco de dados postgres
+RUN ln -s /lib/x86_64-linux-gnu/libpq.so.5 /lib/x86_64-linux-gnu/libpq.so
+
+WORKDIR /app
+
+COPY DiarioApi .
+COPY config.ini .
+
+RUN chmod +x DiarioApi
+
+EXPOSE 8080
+
+CMD ["./DiarioApi"]
