@@ -29,8 +29,9 @@ uses
   uListagem in '..\shared\classesGerais\uListagem.pas',
   uMensagem in '..\shared\classesGerais\uMensagem.pas',
   uFuncoesGerais in '..\shared\funcoesGerais\uFuncoesGerais.pas',
-  untDataModule in '..\dataModule\dataModuleApiLinux\untDataModule.pas';
-
+  untDataModule in '..\dataModule\dataModuleApiLinux\untDataModule.pas' {/ uIndexApiControlle in 'controllerApi\controleHoras\uTipoAtividadeApiControlle.pas';},
+  uTipoAtividadeApiController in 'controllerApi\controleHoras\uTipoAtividadeApiController.pas',
+  uAtividadeApiController in 'controllerApi\controleHoras\uAtividadeApiController.pas';
 
 procedure RunServer(APort: Integer);
 var
@@ -58,26 +59,6 @@ begin
   end;
 end;
 
- { LServer := TIdHTTPWebBrokerBridge.Create(nil);
-  try
-    LServer.DefaultPort := APort;
-    while True do
-    begin
-      Readln(LResponse);
-      LResponse := LowerCase(LResponse);
-      if LResponse = 'start' then
-        LServer.Active := True
-      else if LResponse = 'stop' then
-        LServer.Active := False
-      else if LResponse = 'exit' then
-        Break;
-    end;
-  finally
-    LServer.Free;
-  end; }
-//end;
-//var
- // DataModule1: TDataModule1;
 begin
   try
     // Cria DataModule Linux (sem DFM)

@@ -1,13 +1,11 @@
-fetch('http://localhost:8080/atividade/listar')
+fetch('http://localhost:8080/index')
 .then(response => response.json())
 .then(data => {
      console.log(data)
     const selectTipo = document.getElementById("tipoAtividade");
     const selectAtividade = document.getElementById("atividade");
 
-    data.tipoAtividade.forEach(item => {
-
-        console.log(data)
+    data.tipoAtividade.forEach(item => {    
 
         let option = document.createElement("option");
         option.value = item.id;
@@ -16,6 +14,8 @@ fetch('http://localhost:8080/atividade/listar')
         selectTipo.appendChild(option);
 
     });
+
+  //  selectTipo.selectedIndex = 0;
 
     data.atividade.forEach(item => {
 
@@ -34,12 +34,12 @@ fetch('http://localhost:8080/atividade/listar')
     const selectTipo = document.getElementById("tipoAtividade");
     const selectAtividade = document.getElementById("atividade");
 
-    const tipoSelecionado = selectTipo.value;
+    const tipoSelecionado = Number(selectTipo.value);
 
     selectAtividade.innerHTML = "";
 
     data.atividade
-        .filter(a => a.idTipoAtividade == tipoSelecionado)
+        .filter(a => a.id_tipoatividade == tipoSelecionado)
         .forEach(item => {
 
             let option = document.createElement("option");

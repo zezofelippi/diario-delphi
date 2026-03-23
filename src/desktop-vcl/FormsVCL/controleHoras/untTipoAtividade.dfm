@@ -24,7 +24,6 @@ object frmTipoAtividade: TfrmTipoAtividade
     Height = 81
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = -1
     object Label2: TLabel
       Left = 9
       Top = 14
@@ -65,7 +64,6 @@ object frmTipoAtividade: TfrmTipoAtividade
     Height = 424
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 87
     object dbgTipoAtividade: TDBGrid
       Left = 1
       Top = 58
@@ -109,7 +107,6 @@ object frmTipoAtividade: TfrmTipoAtividade
       Height = 57
       Align = alTop
       TabOrder = 1
-      ExplicitTop = 6
       object Label1: TLabel
         Left = 5
         Top = 3

@@ -1,0 +1,16 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 colunas */
+  gap: 16px; /* espaço entre colunas */
+}
+
+.campo {
+  display: flex;
+  flex-direction: column; /* label em cima do select */
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr; /* vira 1 coluna */
+  }
+}

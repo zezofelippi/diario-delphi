@@ -183,7 +183,11 @@
         <DCCReference Include="..\shared\classesGerais\uListagem.pas"/>
         <DCCReference Include="..\shared\classesGerais\uMensagem.pas"/>
         <DCCReference Include="..\shared\funcoesGerais\uFuncoesGerais.pas"/>
-        <DCCReference Include="..\dataModule\dataModuleApiLinux\untDataModule.pas"/>
+        <DCCReference Include="..\dataModule\dataModuleApiLinux\untDataModule.pas">
+            <Form>/ uIndexApiControlle in &apos;controllerApi\controleHoras\uTipoAtividadeApiControlle.pas&apos;;</Form>
+        </DCCReference>
+        <DCCReference Include="controllerApi\controleHoras\uTipoAtividadeApiController.pas"/>
+        <DCCReference Include="controllerApi\controleHoras\uAtividadeApiController.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

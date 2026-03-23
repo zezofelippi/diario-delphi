@@ -10,7 +10,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB, untDataModule,
   Vcl.Grids, Vcl.DBGrids, uTipoAtividadeController, uTipoAtividadeService, uTipoAtividadeRepository,
   untFormBase, Datasnap.DBClient, Datasnap.Provider, Vcl.Menus, uMensagem, System.Generics.Collections,
-  uTipoAtividadeModel, uTipoAtividadeRepositoryFireDac, uListagem, uFuncoesGerais;
+  uTipoAtividadeModel, uTipoAtividadeRepositoryFireDac, uListagem, uFuncoesGerais,
+  uTipoAtividadeRepositoryApiRest;
 
 type
   TfrmTipoAtividade = class(TfrmFormBase)
@@ -170,12 +171,16 @@ end;
 procedure TfrmTipoAtividade.FormCreate(Sender: TObject);
 var
   tipoAtividadeService: TTipoAtividadeService;
-  tipoAtividadeRepository: TTipoAtividadeRepositoryFireDac;
+  tipoAtividadeRepository: ITipoAtividadeRepository;
+
 begin
 
   inherited;
 
-  tipoAtividadeRepository:= TTipoAtividadeRepositoryFireDac.create();
+  //tipoAtividadeRepository:= TTipoAtividadeRepositoryFireDac.create();
+  tipoAtividadeRepository:= TTipoAtividadeRepositoryApiRest.create('http://localhost:8080');
+
+
   tipoAtividadeService:= TTipoAtividadeService.create(tipoAtividadeRepository);
   FTipoAtividadeController := TTipoAtividadeController.Create(tipoAtividadeService);
 

@@ -15,8 +15,18 @@ object WebModule1: TWebModule1
     end
     item
       MethodType = mtGet
-      Name = 'actListarTipoAtividade'
-      PathInfo = '/atividade/listar'
+      Name = 'actIndex'
+      PathInfo = '/index'
+    end
+    item
+      MethodType = mtGet
+      Name = 'tipoAtividadeGet'
+      PathInfo = '/tipoatividade'
+    end
+    item
+      MethodType = mtPost
+      Name = 'tipoAtividadePost'
+      PathInfo = '/tipoatividade'
     end>
   BeforeDispatch = WebModuleBeforeDispatch
   Height = 230

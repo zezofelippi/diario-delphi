@@ -28,8 +28,8 @@ type
     procedure WebModuleBeforeDispatch(Sender: TObject; Request: TWebRequest;
       Response: TWebResponse; var Handled: Boolean);
 
-    procedure listarTudo(Sender: TObject; Request: TWebRequest;
-      Response: TWebResponse; var Handled: Boolean);
+   // procedure listarTudo(Sender: TObject; Request: TWebRequest;
+   //   Response: TWebResponse; var Handled: Boolean);
 
   private
     { Private declarations }
@@ -42,6 +42,8 @@ var
  // DataModule1: TDataModule1;
 
 implementation
+
+uses uTipoAtividadeApiController, uAtividadeApiController;
 
 {%CLASSGROUP 'System.Classes.TPersistent'}
 
@@ -122,7 +124,7 @@ begin
 
 end; }
 
-procedure TWebModule1.listarTudo(Sender: TObject; Request: TWebRequest;
+{procedure TWebModule1.listarTudo(Sender: TObject; Request: TWebRequest;
   Response: TWebResponse; var Handled: Boolean);
 var
   tipoAtividadeService: TTipoAtividadeService;
@@ -199,19 +201,120 @@ begin
 
   Handled := True;
 
-end;
+end;}
 
 procedure TWebModule1.WebModule1DefaultHandlerAction(Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+var
+  tipoAtividadeApiController: TTipoAtividadeApiController;
+  atividadeApiController: TAtividadeApiController;
+
+  listaTipoAtividade : TObjectList<TTipoAtividade>;
+  listaAtividade : TObjectList<TAtividade>;
+
+  json : TJSONObject;
+  arrayTipoAtividade: TJSONArray;
+  arrayAtividade: TJSONArray;
+
+  tipoAtividade: TTipoAtividade;
+  atividade: TAtividade;
+
 begin
-  if Request.PathInfo = '/atividade/listar' then
+  if Request.PathInfo = '/index' then
   begin
-    listarTudo(Sender, Request, Response, Handled);
-    Exit;
+    tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+    atividadeApiController:= TAtividadeApiController.Create;
+
+    json := TJSONObject.Create;
+    arrayTipoAtividade:= TJSONArray.Create;
+    arrayAtividade:= TJSONArray.Create;
+
+    try
+      listaTipoAtividade:= tipoAtividadeApiController.Listar;
+      listaAtividade:= atividadeApiController.listar;
+
+      for tipoAtividade in listaTipoAtividade do
+      begin
+        arrayTipoAtividade.AddElement(TJSONObject.Create
+                                      .AddPair('id', TJSONNumber.Create(tipoAtividade.id))
+                                      .AddPair('descricao',tipoAtividade.descricao));
+
+      end;
+
+      for atividade in listaAtividade do
+      begin
+        arrayAtividade.AddElement(TJSONObject.Create
+                                  .AddPair('id', TJSONNumber.Create(atividade.id))
+                                  .AddPair('descricao', atividade.descricao)
+                                  .AddPair('obs', atividade.obs)
+                                  .AddPair('id_tipoatividade',
+                                           TJSONNumber.Create(atividade.tipoAtividade.id)));
+      end;
+
+      json.AddPair('tipoAtividade', arrayTipoAtividade);
+      json.AddPair('atividade', arrayAtividade);
+
+      response.ContentType:= 'application/json';
+      response.Content:= json.ToString;
+
+    finally
+      tipoAtividadeApiController.Free;
+      atividadeApiController.Free;
+    end;
+
   end;
 
-  Response.Content :=
-    '<html><body>API rodando</body></html>';
+  if Request.PathInfo = '/tipoatividade' then
+  begin
+    if request.Method = 'GET' then
+    begin
+      tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+      arrayTipoAtividade:= TJSONArray.Create;
+
+      try
+        listaTipoAtividade:= tipoAtividadeApiController.listar;
+
+        for tipoAtividade in listaTipoAtividade do
+        begin
+          arrayTipoAtividade.AddElement(
+            TJSONObject.Create
+              .AddPair('id', TJSONNumber.Create(tipoAtividade.id))
+              .AddPair('descricao', tipoAtividade.descricao));
+        end;
+
+        Response.ContentType:= 'application/json';
+        response.content:= arrayTipoAtividade.ToString;
+
+      finally
+        listaTipoAtividade.Free;
+        tipoAtividadeApiController.Free;
+
+      end;
+    end;
+
+    if request.Method = 'POST' then
+    begin
+      tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+
+      tipoAtividade:= TTipoAtividade.Create;
+      json:= TJSONObject.ParseJSONValue(Request.content) as TJSONObject;
+
+      if not Assigned(json) then
+        raise Exception.Create('JSON inválido ou não recebido');
+
+      try
+        tipoAtividade.id:= json.GetValue<integer>('id');
+        tipoAtividade.descricao:= json.GetValue<string>('descricao');
+        tipoAtividadeApiController.salvar(tipoAtividade);
+      finally
+        tipoAtividade.Free;
+        json.Free;
+        tipoAtividadeApiController.Free;
+      end;
+
+    end;
+  end;
+
 end;
 
 procedure TWebModule1.WebModule1WebActionItem1Action(Sender: TObject;

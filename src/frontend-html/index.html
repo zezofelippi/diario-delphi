@@ -3,18 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="css/estilo.css">
     <title>Movimentação Horas</title>
 </head>
 <body>
-    Tipo de Atividade
-    <select id="tipoAtividade"> 
-    </select>
+  <div class="grid">  
+    <div class="campo">
+      <label for="tipoAtividade">Tipo de Atividade</label>
+      <select id="tipoAtividade" name="tipoAtividade"></select>
+    </div>
 
-    Atividade
-    <select id="atividade"> 
-    </select>
+    <div class="campo">
+      <label for="atividade">Atividade</label>
+      <select id="atividade" name="atividade"></select>
+    </div>      
+  </div>  
 
-    <script src="js/carregarSelectIndex.js"></script>
+  <br>
+  <div class="campo">
+    <label for="obs">OBS:</label>
+    <input type="text" id="obs">
+  </div>
+  
+  <br>
+  <input type="submit" value="Salvar">
+   
+    
+
+  <script src="js/carregarSelectIndex.js"></script>
     
 </body>
 </html>
