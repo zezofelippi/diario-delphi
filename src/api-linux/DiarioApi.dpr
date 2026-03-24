@@ -31,7 +31,10 @@ uses
   uFuncoesGerais in '..\shared\funcoesGerais\uFuncoesGerais.pas',
   untDataModule in '..\dataModule\dataModuleApiLinux\untDataModule.pas' {/ uIndexApiControlle in 'controllerApi\controleHoras\uTipoAtividadeApiControlle.pas';},
   uTipoAtividadeApiController in 'controllerApi\controleHoras\uTipoAtividadeApiController.pas',
-  uAtividadeApiController in 'controllerApi\controleHoras\uAtividadeApiController.pas';
+  uAtividadeApiController in 'controllerApi\controleHoras\uAtividadeApiController.pas',
+  uRouter in 'uRouter.pas',
+  uTipoAtividadeEndPoint in 'endPoints\controleHoras\uTipoAtividadeEndPoint.pas',
+  uIndexEndPoint in 'endPoints\uIndexEndPoint.pas';
 
 procedure RunServer(APort: Integer);
 var

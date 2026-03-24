@@ -188,6 +188,9 @@
         </DCCReference>
         <DCCReference Include="controllerApi\controleHoras\uTipoAtividadeApiController.pas"/>
         <DCCReference Include="controllerApi\controleHoras\uAtividadeApiController.pas"/>
+        <DCCReference Include="uRouter.pas"/>
+        <DCCReference Include="endPoints\controleHoras\uTipoAtividadeEndPoint.pas"/>
+        <DCCReference Include="endPoints\uIndexEndPoint.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

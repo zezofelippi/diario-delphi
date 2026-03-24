@@ -8,7 +8,9 @@ uses
   untMovimentacaoHoras in 'FormsVCL\controleHoras\untMovimentacaoHoras.pas' {frmMovimentacaoHoras},
   untDataModule in '..\dataModule\dataModuleVCL\untDataModule.pas' {DataModule1: TDataModule},
   untFormBase in 'FormsVCL\untFormBase.pas' {frmFormBase},
-  uTipoAtividadeRepositoryApiRest in '..\shared\repositoryApiRest\controleHoras\uTipoAtividadeRepositoryApiRest.pas';
+  uTipoAtividadeRepositoryApiRest in '..\shared\repositoryApiRest\controleHoras\uTipoAtividadeRepositoryApiRest.pas',
+  uConfig in 'classesVCL\uConfig.pas',
+  uControleHorasRepositoryFactory in 'classesVCL\controleHoras\uControleHorasRepositoryFactory.pas';
 
 {$R *.res}
 

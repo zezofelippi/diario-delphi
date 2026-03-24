@@ -43,7 +43,7 @@ var
 
 implementation
 
-uses uTipoAtividadeApiController, uAtividadeApiController;
+uses uTipoAtividadeApiController, uAtividadeApiController, uRouter;
 
 {%CLASSGROUP 'System.Classes.TPersistent'}
 
@@ -205,7 +205,7 @@ end;}
 
 procedure TWebModule1.WebModule1DefaultHandlerAction(Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-var
+{var
   tipoAtividadeApiController: TTipoAtividadeApiController;
   atividadeApiController: TAtividadeApiController;
 
@@ -217,10 +217,12 @@ var
   arrayAtividade: TJSONArray;
 
   tipoAtividade: TTipoAtividade;
-  atividade: TAtividade;
+  atividade: TAtividade; }
 
 begin
-  if Request.PathInfo = '/index' then
+  TRouter.HandleRequest(Request, Response, Handled);
+
+ { if Request.PathInfo = '/index' then
   begin
     tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
     atividadeApiController:= TAtividadeApiController.Create;
@@ -313,7 +315,7 @@ begin
       end;
 
     end;
-  end;
+  end;}
 
 end;
 

@@ -45,52 +45,66 @@ implementation
 
 { TDataModule1 }
 
+uses uConfig;
+
 
 procedure TDataModule1.DataModuleCreate(Sender: TObject);
 
 var
   Ini: TIniFile;
   CaminhoIni: string;
+  config: TConfig;
 begin
   CaminhoIni := ExtractFilePath(ParamStr(0)) + 'config.ini';
 
   Ini := TIniFile.Create(CaminhoIni);
+  config:= TConfig.create;
 
   try
-    FDConnection.Params.Clear;
-
-    FDConnection.Params.Values['DriverID'] :=
-      Ini.ReadString('BANCO', 'DriverID', '');
-
-    FDConnection.Params.Values['Database'] :=
-      Ini.ReadString('BANCO', 'Database', '');
-
-    FDConnection.Params.Values['User_Name'] :=
-      Ini.ReadString('BANCO', 'User_Name', '');
-
-    FDConnection.Params.Values['Password'] :=
-      Ini.ReadString('BANCO', 'Password', '');
-
-    FDConnection.Params.Values['Server'] :=
-      Ini.ReadString('BANCO', 'Server', '');
-
-    FDConnection.Params.Values['Port'] :=
-      Ini.ReadString('BANCO', 'Port', '');
-  finally
-    Ini.Free;
-  end;
-
-  try
-    FDConnection.Connected := True;
-  except
-    on E: exception do
+    if config.tipoRepositorio = 'FIREBIRD' then
     begin
-      CaminhoIni := ExtractFilePath(ParamStr(0));
-      logErro(E);
-      MessageDlg('Erro ao carregar arquivo config.ini, verificar log.txt na pasta '+
-      CaminhoIni, mtError, [mbOK],0);
-      Application.Terminate;
+
+      try
+        FDConnection.Params.Clear;
+
+        FDConnection.Params.Values['DriverID'] :=
+          Ini.ReadString('BANCO', 'DriverID', '');
+
+        FDConnection.Params.Values['Database'] :=
+          Ini.ReadString('BANCO', 'Database', '');
+
+        FDConnection.Params.Values['User_Name'] :=
+          Ini.ReadString('BANCO', 'User_Name', '');
+
+        FDConnection.Params.Values['Password'] :=
+          Ini.ReadString('BANCO', 'Password', '');
+
+        FDConnection.Params.Values['Server'] :=
+          Ini.ReadString('BANCO', 'Server', '');
+
+        FDConnection.Params.Values['Port'] :=
+          Ini.ReadString('BANCO', 'Port', '');
+      finally
+        Ini.Free;
+
+      end;
+
+      try
+        FDConnection.Connected := True;
+      except
+        on E: exception do
+        begin
+          CaminhoIni := ExtractFilePath(ParamStr(0));
+          logErro(E);
+          MessageDlg('Erro ao carregar arquivo config.ini, verificar log.txt na pasta '+
+          CaminhoIni, mtError, [mbOK],0);
+          Application.Terminate;
+        end;
+      end;
+
     end;
+  finally
+    config.Free;
   end;
 
 end;
