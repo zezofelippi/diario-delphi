@@ -34,7 +34,8 @@ uses
   uAtividadeApiController in 'controllerApi\controleHoras\uAtividadeApiController.pas',
   uRouter in 'uRouter.pas',
   uTipoAtividadeEndPoint in 'endPoints\controleHoras\uTipoAtividadeEndPoint.pas',
-  uIndexEndPoint in 'endPoints\uIndexEndPoint.pas';
+  uIndexEndPoint in 'endPoints\uIndexEndPoint.pas',
+  uAtividadeEndPoint in 'endPoints\controleHoras\uAtividadeEndPoint.pas';
 
 procedure RunServer(APort: Integer);
 var

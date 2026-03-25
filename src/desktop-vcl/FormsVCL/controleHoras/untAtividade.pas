@@ -14,7 +14,8 @@ uses
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, MidasLib,
   Vcl.DBCtrls, uTipoAtividadeController, uTipoAtividadeRepository, uTipoAtividadeService, untFormBase,
   Vcl.Menus, Datasnap.DBClient, Datasnap.Provider, uMensagem, System.Generics.Collections,
-  uTipoAtividadeRepositoryFireDac, uTipoAtividadeModel, uListagem, uFuncoesGerais;
+  uTipoAtividadeRepositoryFireDac, uTipoAtividadeModel, uListagem, uFuncoesGerais,
+  uAtividadeRepository, uControleHorasRepositoryFactory;
 
 type
   TfrmAtividade = class(TfrmFormBase)
@@ -235,23 +236,23 @@ end;
 
 procedure TfrmAtividade.FormCreate(Sender: TObject);
 var
-  atividadeRepository: TAtividadeRepositoryFireDac;
+  atividadeRepository: IAtividadeRepository;
   atividadeService: TAtividadeService;
 
-  tipoAtividadeRepository: TTipoAtividadeRepositoryFireDac;
+  tipoAtividadeRepository: ITipoAtividadeRepository;
   tipoAtividadeService: TTipoAtividadeService;
 
 begin
   inherited;
 
   ///INSTANCIANDO ATIVIDADE///////////////////
-  atividadeRepository:= TAtividadeRepositoryFireDac.create();
+  atividadeRepository:= TControleHorasRepositoryFactory.criarAtividadeRepository;
   atividadeService:= TAtividadeService.create(atividadeRepository);
   FAtividadeController := TAtividadeController.Create(atividadeService);
   ///FIM INSTANCIANDO ATIVIDADE///////////////////
 
   ///INSTANCIANDO TIPO ATIVIDADE/////////////////////
-  tipoAtividadeRepository:= TTipoAtividadeRepositoryFireDac.create();
+  tipoAtividadeRepository:= TControleHorasRepositoryFactory.criarTipoAtividadeRepository;
   tipoAtividadeService:= TTipoAtividadeService.create(tipoAtividadeRepository);
   FTipoAtividadeController := TTipoAtividadeController.Create(tipoAtividadeService);
   ///FIM INSTANCIANDO TIPO ATIVIDADE/////////////////////

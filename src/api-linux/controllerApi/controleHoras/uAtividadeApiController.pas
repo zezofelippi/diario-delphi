@@ -3,7 +3,7 @@ unit uAtividadeApiController;
 interface
 uses uAtividadeModel, uAtividadeController, uAtividadeService, uAtividadeRepository,
      uAtividadeRepositoryFireDac, Web.HTTPApp, System.Generics.Collections,
-     System.JSON, REST.JSON;
+     System.JSON, REST.JSON, uMensagem;
 
 type
 
@@ -14,10 +14,12 @@ type
       constructor Create;
       destructor Destroy; override;
       function listar: TObjectList<TAtividade>;
+      function salvar(atividade: TAtividade):TMensagem;
 
   end;
 
 implementation
+
 
 { TAtividadeApiController }
 
@@ -42,6 +44,12 @@ end;
 function TAtividadeApiController.listar: TObjectList<TAtividade>;
 begin
   result := FAtividadeController.listar(0,0,'');
+end;
+
+function TAtividadeApiController.salvar(atividade: TAtividade): TMensagem;
+begin
+  result:= FAtividadeController.salvar(atividade.id, atividade.descricao,
+           atividade.obs, atividade.tipoAtividade.id);
 end;
 
 end.

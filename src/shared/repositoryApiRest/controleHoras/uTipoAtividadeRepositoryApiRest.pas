@@ -15,7 +15,7 @@ type
       procedure salvar(tipoAtividade: TTipoAtividade);
       procedure alterar(tipoAtividade: TTipoAtividade);
       procedure excluir(id: integer);
-      function listar(descricao: string): TObjectList<TTipoAtividade>;
+      function listar( descricao: string): TObjectList<TTipoAtividade>;
 
   end;
 
@@ -55,6 +55,9 @@ begin
   try
     response:= client.get(FBaseURL + '/tipoatividade');
 
+    //response.ContentAsString(nil):= response recebe a resposta (corpo da requisição get) e converte p/ string
+    //TJSONObject.ParseJSONValue := transforma o conteudo string convertido acima em objeto json delphi
+    //as TJsonArray:= aqui é um cast, veja esse objeto json delphi como um array p/ pode passar no for abaixo
     jsonArray:= TJSONObject.ParseJSONValue(response.ContentAsString(nil)) as TJSONArray;
 
     for i := 0 to jsonArray.Count - 1 do

@@ -10,7 +10,8 @@ uses
   untFormBase in 'FormsVCL\untFormBase.pas' {frmFormBase},
   uTipoAtividadeRepositoryApiRest in '..\shared\repositoryApiRest\controleHoras\uTipoAtividadeRepositoryApiRest.pas',
   uConfig in 'classesVCL\uConfig.pas',
-  uControleHorasRepositoryFactory in 'classesVCL\controleHoras\uControleHorasRepositoryFactory.pas';
+  uControleHorasRepositoryFactory in 'classesVCL\controleHoras\uControleHorasRepositoryFactory.pas',
+  uAtividadeRepositoryApiRest in '..\shared\repositoryApiRest\controleHoras\uAtividadeRepositoryApiRest.pas';
 
 {$R *.res}
 

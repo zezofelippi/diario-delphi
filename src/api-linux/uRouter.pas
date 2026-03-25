@@ -14,7 +14,7 @@ type
 
 implementation
 
-uses uTipoAtividadeEndPoint, uIndexEndPoint;
+uses uTipoAtividadeEndPoint, uIndexEndPoint, uAtividadeEndPoint;
 
 { TRouter }
 
@@ -31,6 +31,12 @@ begin
   begin
     TTipoAtividadeEndPoint.handle(request, response);
     Handled:= true;
+    exit;
+  end
+  else if Request.PathInfo = '/atividade' then
+  begin
+    TAtividadeEndPoint.handle(request, response);
+    handled:= true;
     exit;
   end;
 
