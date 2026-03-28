@@ -18,7 +18,7 @@ type
 
       function listar: TObjectList<TTipoAtividade>;
       function salvar(tipoAtividade: TTipoAtividade):TMensagem;
-
+      procedure excluir(id: integer);
 
   end;
 
@@ -41,6 +41,11 @@ destructor TTipoAtividadeApiController.Destroy;
 begin
   FTipoAtividadeController.Free;
   inherited;
+end;
+
+procedure TTipoAtividadeApiController.excluir(id: integer);
+begin
+  FTipoAtividadeController.excluir(id);
 end;
 
 function TTipoAtividadeApiController.Listar: TObjectList<TTipoAtividade>;

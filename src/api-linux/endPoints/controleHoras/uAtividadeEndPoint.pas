@@ -63,22 +63,6 @@ begin
           // adiciona no array
           arrayAtividade.AddElement(objAtividade);
 
-
-         { jsonTipoAtividade:= TJSONObject.Create
-           .AddPair('id', TJSONNumber.Create(atividade.tipoAtividade.id))
-           .AddPair('descricao', atividade.tipoAtividade.descricao);
-
-          arrayAtividade.AddElement(
-                 TJSONObject.Create
-                 .AddPair('id', TJSONNumber.Create(atividade.id))
-                 .AddPair('descricao', atividade.descricao)
-                 .AddPair('obs', atividade.obs)
-                 //.AddPair('id_tipoatividade', TJSONNumber.Create(atividade.tipoAtividade.id)))
-               //  .AddPair('tipoAtividade', jsonTipoAtividade))
-
-          objAtividade.AddPair(TJSONPair.Create('tipoAtividade', jsonTipoAtividade));
-          arrayAtividade.AddElement(objAtividade);}
-
         end;
 
         response.ContentType:='application/json';
@@ -105,6 +89,8 @@ begin
 
     json:= TJSONObject.ParseJSONValue(request.Content) as TJSONObject;
 
+    Writeln('ID recebido atividade: ' + json.GetValue<string>('id'));
+
     if not Assigned(json) then
       raise Exception.Create('JSON inválido ou não recebido');
 
@@ -112,22 +98,23 @@ begin
       atividade.id:= json.GetValue<integer>('id');
       atividade.descricao:= json.GetValue<string>('descricao');
       atividade.obs:= json.GetValue<string>('obs');
+      atividade.tipoAtividade.id:= json.GetValue<integer>('id_tipoatividade');
 
-      jsonTipoAtividade:= json.GetValue<TJSONObject>('tipoAtividade');
+      //jsonTipoAtividade:= json.GetValue<TJSONObject>('tipoAtividade');
 
-      if assigned(jsonTipoAtividade) then
+     { if assigned(jsonTipoAtividade) then
       begin
         atividade.tipoAtividade:= TTipoAtividade.create;
         atividade.id:= jsonTipoAtividade.GetValue<integer>('id');
         atividade.descricao:= jsonTipoAtividade.GetValue<string>('descricao');
-      end;
+      end; }
 
       atividadeApiController.salvar(atividade);
 
     finally
       atividade.Free;
       json.Free;
-      jsonTipoAtividade.Free;
+     // jsonTipoAtividade.Free;
       atividadeApiController.Free;
     end;
 

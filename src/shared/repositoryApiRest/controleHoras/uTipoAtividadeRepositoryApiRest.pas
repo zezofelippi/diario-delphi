@@ -25,7 +25,34 @@ implementation
 
 procedure TTipoAtividadeRepositoryApiRest.alterar(
   tipoAtividade: TTipoAtividade);
+var
+  client: TNetHTTPClient;
+  //response: THTTPResponse;
+  json: TJSONObject;
+  stream: TStringStream;
 begin
+  client:= TNetHTTPClient.Create(nil);
+  client.ContentType := 'application/json';
+
+  try
+    json:= TJSONObject.Create;
+    try
+      json.AddPair('id', TJSONNumber.Create(tipoAtividade.id));
+      json.AddPair('descricao', tipoAtividade.descricao);
+
+      stream := TStringStream.Create(json.ToString, TEncoding.UTF8);
+      try
+        client.Put(FBaseURL + '/tipoatividade', stream);
+      finally
+        stream.Free;
+      end;
+
+    finally
+      json.Free;
+    end;
+  finally
+    client.Free;
+  end;
 
 end;
 
@@ -35,7 +62,32 @@ begin
 end;
 
 procedure TTipoAtividadeRepositoryApiRest.excluir(id: integer);
+var
+  client: TNetHTTPClient;
+  json: TJSONObject;
+  //stream: TStringStream;
 begin
+  client:= TNetHTTPClient.Create(nil);
+  client.ContentType:= 'application/json';
+
+  try
+   // json:= TJSONObject.Create;
+    try
+     // json.AddPair('id', TJSONNumber.Create(id));
+     // stream := TStringStream.Create(json.ToString, TEncoding.UTF8);
+
+      try
+        client.Delete(FBaseURL + '/tipoatividade?id=' + id.ToString);
+      finally
+       // stream.Free;
+      end;
+    finally
+   //   json.Free;
+    end;
+
+  finally
+    client.Free;
+  end;
 
 end;
 
@@ -51,6 +103,7 @@ var
 begin
   result:= TObjectList<TTipoAtividade>.Create(true);
   client:= TNetHTTPClient.Create(nil);
+  client.ContentType := 'application/json';
 
   try
     response:= client.get(FBaseURL + '/tipoatividade');
@@ -81,10 +134,12 @@ end;
 procedure TTipoAtividadeRepositoryApiRest.salvar(tipoAtividade: TTipoAtividade);
 var
   client: TNetHTTPClient;
-  response: IHTTPResponse;
+ // response: IHTTPResponse;
   json: TJSONObject;
+  stream: TStringStream;
 begin
   client:= TNetHTTPClient.Create(nil);
+  client.ContentType := 'application/json';
 
   try
     json:= TJSONObject.Create;
@@ -92,8 +147,13 @@ begin
       json.AddPair('id', TJSONNumber.Create(0));
       json.AddPair('descricao', tipoAtividade.descricao);
 
-      response:= client.Post(FBaseURL + '/tipoatividade',
-                           TStringStream.Create(json.ToString, TEncoding.UTF8));
+      stream:= TStringStream.Create(json.ToString, TEncoding.UTF8);
+
+      try
+        client.Post(FBaseURL + '/tipoatividade', stream);
+      finally
+        stream.Free;
+      end;
 
     finally
       json.Free;

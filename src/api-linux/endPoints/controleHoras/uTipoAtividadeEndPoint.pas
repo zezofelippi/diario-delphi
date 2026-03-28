@@ -53,9 +53,8 @@ begin
        tipoAtividadeApiController.Free;
 
      end;
-  end;
-
-  if request.Method = 'POST' then
+  end
+  else if request.Method = 'POST' then
   begin
     tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
 
@@ -63,7 +62,7 @@ begin
     json:= TJSONObject.ParseJSONValue(Request.content) as TJSONObject;
 
     if not Assigned(json) then
-      raise Exception.Create('JSON inválido ou não recebido');
+      raise Exception.Create('JSON inválido ou não recebido para salvar');
 
     try
       tipoAtividade.id:= json.GetValue<integer>('id');
@@ -74,8 +73,51 @@ begin
       json.Free;
       tipoAtividadeApiController.Free;
     end;
+  end
+  else if request.Method = 'PUT' then
+  begin
+    tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+    tipoAtividade:= TTipoAtividade.Create;
+    json:= TJSONObject.ParseJSONValue(request.content) as TJSONObject;
+
+    if not Assigned(json) then
+      raise Exception.Create('JSON inválido ou não recebido para alterar');
+
+    try
+      tipoAtividade.id:= json.GetValue<integer>('id');
+      tipoAtividade.descricao:= json.GetValue<string>('descricao');
+
+      //Writeln('ID recebido: ' + json.GetValue<string>('id'));
+
+      tipoAtividadeApiController.salvar(tipoAtividade);
+    finally
+      tipoAtividade.Free;
+      json.Free;
+      tipoAtividadeApiController.Free;
+    end;
+  end
+  else if request.Method = 'DELETE' then
+  begin
+    tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+    tipoAtividade:= TTipoAtividade.Create;
+   // json:= TJSONObject.ParseJSONValue(request.Content) as TJSONObject;
+
+   // Writeln('ID recebido: ' + json.GetValue<string>('id'));
+  //  if not Assigned(json) then
+  //    raise Exception.Create('JSON inválido ou não recebido para deletar');
+
+    try
+     // tipoAtividadeApiController.excluir(json.GetValue<integer>('id'));
+      tipoAtividadeApiController.excluir(StrToInt(Request.QueryFields.Values['id']));
+
+    finally
+      tipoAtividade.Free;
+     // json.Free;
+      tipoAtividadeApiController.Free;
+    end;
 
   end;
+
 end;
 
 end.

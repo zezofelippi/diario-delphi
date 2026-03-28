@@ -4,7 +4,7 @@ interface
 
 uses uAtividadeRepository, uAtividademodel, System.Generics.Collections,
      System.JSON, System.SysUtils, System.Net.HttpClient, System.Net.HttpClientComponent,
-     uTipoAtividadeModel;
+     uTipoAtividadeModel, System.Classes;
 
 type
 
@@ -13,8 +13,8 @@ type
       FBaseURL: string;
     public
       constructor Create(const ABaseURL: string);
-      procedure salvar(tipoAtividade: TAtividade);
-      procedure alterar(tipoAtividade: TAtividade);
+      procedure salvar(atividade: TAtividade);
+      procedure alterar(atividade: TAtividade);
       procedure excluir(id: integer);
       function listar(idAtividade, idTipoAtividade: integer;
                       descricao: string): TObjectList<TAtividade>;
@@ -25,7 +25,7 @@ implementation
 
 { TAtividadeRepositoryApiRest }
 
-procedure TAtividadeRepositoryApiRest.alterar(tipoAtividade: TAtividade);
+procedure TAtividadeRepositoryApiRest.alterar(atividade: TAtividade);
 begin
 
 end;
@@ -90,8 +90,37 @@ begin
 
 end;
 
-procedure TAtividadeRepositoryApiRest.salvar(tipoAtividade: TAtividade);
+procedure TAtividadeRepositoryApiRest.salvar(atividade: TAtividade);
+var
+  client: TNetHTTPClient;
+  json: TJSONObject;
+  stream: TStringStream;
 begin
+
+  client:= TNetHTTPClient.Create(nil);
+  client.ContentType:= 'application/json';
+
+  try
+    json:= TJSONObject.Create;
+    try
+      json.AddPair('id', TJSONNumber.Create(0));
+      json.AddPair('descricao', atividade.descricao);
+      json.AddPair('obs', atividade.obs);
+      json.AddPair('id_tipoatividade', TJSONNumber.Create(atividade.tipoAtividade.id));
+
+      stream:= TStringStream.Create(json.ToString, TEncoding.UTF8);
+
+      try
+        client.Post(FBaseURL + '/atividade', stream);
+      finally
+        client.Free;
+      end;
+    finally
+      stream.Free;
+    end;
+  finally
+    json.Free;
+  end;
 
 end;
 
