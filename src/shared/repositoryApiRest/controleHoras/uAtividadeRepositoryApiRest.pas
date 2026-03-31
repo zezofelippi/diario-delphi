@@ -26,7 +26,35 @@ implementation
 { TAtividadeRepositoryApiRest }
 
 procedure TAtividadeRepositoryApiRest.alterar(atividade: TAtividade);
+var
+  client: TNetHTTPClient;
+  json: TJSONObject;
+  stream: TStringStream;
 begin
+  client:= TNetHTTPClient.Create(nil);
+  client.ContentType:= 'application/json';
+
+  try
+    json:= TJSONObject.Create;
+    try
+      json.AddPair('id', TJSONNumber.Create(atividade.id));
+      json.AddPair('descricao', atividade.descricao);
+      json.AddPair('obs', atividade.obs);
+      json.AddPair('id_tipoatividade', TJSONNumber.Create(atividade.tipoAtividade.id));
+
+      stream:= TStringStream.Create(json.ToString, TEncoding.UTF8);
+      try
+        client.Put(FBaseURL + '/atividade', stream);
+      finally
+        stream.Free;
+      end;
+    finally
+      json.Free;
+    end;
+
+  finally
+    client.Free;
+  end;
 
 end;
 
@@ -36,7 +64,16 @@ begin
 end;
 
 procedure TAtividadeRepositoryApiRest.excluir(id: integer);
+var
+  client: TNetHTTPClient;
 begin
+  client:= TNetHTTPClient.Create(nil);
+
+  try
+    client.Delete(FBaseURL + '/atividade?id=' + id.ToString);
+  finally
+    client.Free;
+  end;
 
 end;
 

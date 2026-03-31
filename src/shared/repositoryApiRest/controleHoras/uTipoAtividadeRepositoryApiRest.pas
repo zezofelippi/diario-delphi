@@ -64,27 +64,14 @@ end;
 procedure TTipoAtividadeRepositoryApiRest.excluir(id: integer);
 var
   client: TNetHTTPClient;
-  json: TJSONObject;
+ // json: TJSONObject;
   //stream: TStringStream;
 begin
   client:= TNetHTTPClient.Create(nil);
   client.ContentType:= 'application/json';
 
   try
-   // json:= TJSONObject.Create;
-    try
-     // json.AddPair('id', TJSONNumber.Create(id));
-     // stream := TStringStream.Create(json.ToString, TEncoding.UTF8);
-
-      try
-        client.Delete(FBaseURL + '/tipoatividade?id=' + id.ToString);
-      finally
-       // stream.Free;
-      end;
-    finally
-   //   json.Free;
-    end;
-
+    client.Delete(FBaseURL + '/tipoatividade?id=' + id.ToString);
   finally
     client.Free;
   end;

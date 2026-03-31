@@ -15,6 +15,7 @@ type
       destructor Destroy; override;
       function listar: TObjectList<TAtividade>;
       function salvar(atividade: TAtividade):TMensagem;
+      procedure excluir(id: integer);
 
   end;
 
@@ -39,6 +40,11 @@ destructor TAtividadeApiController.Destroy;
 begin
   FAtividadeController.Free;
   inherited;
+end;
+
+procedure TAtividadeApiController.excluir(id: integer);
+begin
+  FAtividadeController.excluir(id);
 end;
 
 function TAtividadeApiController.listar: TObjectList<TAtividade>;

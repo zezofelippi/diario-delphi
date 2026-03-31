@@ -54,11 +54,12 @@ begin
 
      end;
   end
-  else if request.Method = 'POST' then
+  else if (request.Method = 'POST') or (request.Method = 'PUT') then
   begin
     tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
 
     tipoAtividade:= TTipoAtividade.Create;
+
     json:= TJSONObject.ParseJSONValue(Request.content) as TJSONObject;
 
     if not Assigned(json) then
@@ -74,10 +75,12 @@ begin
       tipoAtividadeApiController.Free;
     end;
   end
-  else if request.Method = 'PUT' then
+  {else if request.Method = 'PUT' then
   begin
     tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
+
     tipoAtividade:= TTipoAtividade.Create;
+
     json:= TJSONObject.ParseJSONValue(request.content) as TJSONObject;
 
     if not Assigned(json) then
@@ -95,11 +98,11 @@ begin
       json.Free;
       tipoAtividadeApiController.Free;
     end;
-  end
+  end  }
   else if request.Method = 'DELETE' then
   begin
     tipoAtividadeApiController:= TTipoAtividadeApiController.Create;
-    tipoAtividade:= TTipoAtividade.Create;
+   // tipoAtividade:= TTipoAtividade.Create;
    // json:= TJSONObject.ParseJSONValue(request.Content) as TJSONObject;
 
    // Writeln('ID recebido: ' + json.GetValue<string>('id'));
@@ -111,7 +114,7 @@ begin
       tipoAtividadeApiController.excluir(StrToInt(Request.QueryFields.Values['id']));
 
     finally
-      tipoAtividade.Free;
+      //tipoAtividade.Free;
      // json.Free;
       tipoAtividadeApiController.Free;
     end;

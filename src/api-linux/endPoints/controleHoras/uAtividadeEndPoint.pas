@@ -82,14 +82,14 @@ begin
     end;
 
   end
-  else if request.Method = 'POST' then
+  else if (request.Method = 'POST') OR (request.Method = 'PUT') then
   begin
     atividadeApiController:= TAtividadeApiController.Create;
     atividade:= TAtividade.create;
 
     json:= TJSONObject.ParseJSONValue(request.Content) as TJSONObject;
 
-    Writeln('ID recebido atividade: ' + json.GetValue<string>('id'));
+    //Writeln('ID recebido atividade: ' + json.GetValue<string>('id'));
 
     if not Assigned(json) then
       raise Exception.Create('JSON inválido ou não recebido');
@@ -100,15 +100,6 @@ begin
       atividade.obs:= json.GetValue<string>('obs');
       atividade.tipoAtividade.id:= json.GetValue<integer>('id_tipoatividade');
 
-      //jsonTipoAtividade:= json.GetValue<TJSONObject>('tipoAtividade');
-
-     { if assigned(jsonTipoAtividade) then
-      begin
-        atividade.tipoAtividade:= TTipoAtividade.create;
-        atividade.id:= jsonTipoAtividade.GetValue<integer>('id');
-        atividade.descricao:= jsonTipoAtividade.GetValue<string>('descricao');
-      end; }
-
       atividadeApiController.salvar(atividade);
 
     finally
@@ -118,9 +109,17 @@ begin
       atividadeApiController.Free;
     end;
 
+  end
+  else if request.Method = 'DELETE' then
+  begin
+    atividadeApiController:= TAtividadeApiController.Create;
 
+    try
+      atividadeApiController.excluir(strtoint(request.QueryFields.Values['id']));
+    finally
+      atividadeApiController.Free;
+    end;
   end;
-
 end;
 
 end.
